@@ -2,6 +2,7 @@
 # Load source libraries
 # TODO: Organize dependencies
 #
+setwd("~/code/cnprep_clustering/scripts")
 source("helperFunctions.R")
 source("segmentClusteringLibrary.R")
 
