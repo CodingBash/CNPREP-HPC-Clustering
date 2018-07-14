@@ -11,5 +11,5 @@ module load RBio/3.6.0
 
 pwd
 date
-Rscript segmentClusteringHPCsync.R
+Rscript segmentClusteringHPC.R
 date
