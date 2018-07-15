@@ -85,6 +85,6 @@ writeLines(	c("UGE JOB SUBMISSION NOTES FOR segmentClusteringHPC.R",
 	 	paste("User description of job: ", description),
 		"The script centers the input segments and clusters the segments using GMM",
 		paste("The output files wrote to: ", output_dir),
-		paste("This input parameters used mclust_model =", mclust_model, "and minjoin =", minjoin, "and ntrial=", ntrial))
+		paste("This input parameters used mclust_model =", mclust_model, "and minjoin =", minjoin, "and ntrial=", ntrial)),
 	 fileConn)
 close(fileConn)
