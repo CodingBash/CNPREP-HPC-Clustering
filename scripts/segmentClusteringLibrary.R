@@ -80,10 +80,10 @@ retrieveRatInput <- function(facets_snp_data){
 #
 runCNpreprocessing <- function(seginput, ratinput, norminput, 
                                blsize=50, minjoin=0.25, cweight=0.4, bstimes=50, 
-                               chromrange=1:22, distrib="Rparallel", njobs=40, modelNames="E"){
+                               chromrange=1:22, distrib="Rparallel", njobs=40, modelNames="E", ntrial= 10){
   segtable<-CNpreprocessing(segall=seginput,ratall=ratinput,"ID","start","end",
                             chromcol="chrom",bpstartcol="chrom.pos.start",bpendcol="chrom.pos.end",blsize=blsize,
                             minjoin=minjoin,cweight=cweight,bstimes=bstimes,chromrange=chromrange,distrib=distrib,njobs=njobs,
-                            modelNames=modelNames,normalength=norminput[,1],normalmedian=norminput[,2])
+                            modelNames=modelNames,normalength=norminput[,1],normalmedian=norminput[,2], ntrial=ntrial)
   return(segtable)
 }

@@ -1,3 +1,30 @@
+args <- commandArgs(trailingOnly = TRUE)
+
+#
+# Set script arguments
+#
+output_dir <- "" 
+mclust_model <- NULL
+minjoin <- NULL
+ntrial <- NULL
+description <- "No description provided by user."
+if (length(args) >= 1){
+	output_dir <- args[1]
+}
+if (length(args) >= 2){
+	mclust_model <- args[2]	
+}
+if (length(args) >= 3){
+	minjoin <- as.numeric(args[3])
+}
+if(length(args) >= 4){
+	ntrial <- as.numeric(args[4])
+}
+if (length(args) >= 5){
+	description <- args[5]
+}
+
+print(paste("PARAMETERS:", "output_dir=", output_dir, "mclust_model=", mclust_model, "minjoin=", minjoin, "ntrial=", ntrial, "description=", description))
 #
 # Load source libraries
 # TODO: Organize dependencies
@@ -23,6 +50,9 @@ tumor_samples <- load_samples(classes = c("T"), sampleList = "./resources/sample
 # Generate norminput argument
 norminput <- retrieveNormInput(normalSegments)
 
+# Create folder with output
+dir.create(file.path("./output/", output_dir))
+
 for(tumor_samples.i in 1:length(tumor_samples)) {
   sample <- tumor_samples[tumor_samples.i]
   
@@ -40,9 +70,21 @@ for(tumor_samples.i in 1:length(tumor_samples)) {
   print(paste("Retrieved ratio input for sample", sample))
   
   # Run CNprep:CNpreprocessing
-  segtable <- runCNpreprocessing(seginput = seginput, ratinput = ratinput, norminput = norminput, modelNames = "V") #TODO: Is there a distrib="Grid"?
+  segtable <- runCNpreprocessing(seginput = seginput, ratinput = ratinput, norminput = norminput, modelNames = mclust_model, minjoin = minjoin, ntrial = ntrial) #TODO: Is there a distrib="Grid"?
   print(paste("Produced segtable for sample", sample))
   
-  write.table(segtable, paste("./output/", sample, "_segtable.tsv", sep = ""), row.names = F, sep = "\t", quote = FALSE)
+  write.table(segtable, paste("./output/", output_dir,"/", sample, "_segtable.tsv", sep = ""), row.names = F, sep = "\t", quote = FALSE)
   print(paste("Wrote output for sample", sample))
 }
+
+# TODO: Do this for all HPC scripts. May need to make function in helperFunctions.R to reduce duplicate code
+info_filename <- paste("./output/", output_dir, "/JobInformation.txt", sep = "")
+file.create(info_filename)
+fileConn <- file(info_filename)
+writeLines(	c("UGE JOB SUBMISSION NOTES FOR segmentClusteringHPC.R",
+	 	paste("User description of job: ", description),
+		"The script centers the input segments and clusters the segments using GMM",
+		paste("The output files wrote to: ", output_dir),
+		paste("This input parameters used mclust_model =", mclust_model, "and minjoin =", minjoin, "and ntrial=", ntrial))
+	 fileConn)
+close(fileConn)

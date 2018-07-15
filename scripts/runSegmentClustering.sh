@@ -2,7 +2,7 @@
 # run job in the current working directory where qsub is executed from
 #$ -cwd
 #  specify that the job requires 16GB of memory
-#$ -l m_mem_free=16G
+#$ -l m_mem_free=4G
  
 # run commands and application
 source /sonas-hs/it/hpc/home/easybuild/lmod-setup.sh
@@ -11,5 +11,6 @@ module load RBio/3.6.0
 
 pwd
 date
-Rscript segmentClusteringHPC.R
+echo ${description}
+Rscript segmentClusteringHPC.R ${output_dir} ${mclust_model} ${minjoin} ${ntrial} "${description}"
 date
