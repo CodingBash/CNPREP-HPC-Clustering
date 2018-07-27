@@ -45,7 +45,7 @@ chromosomeSizes <- readRDS("./resources/chromosomeSizes.rds")
 normalSegments <- selectSegmentsWithEvents(events = c("A", "D", "N"), samples = normal_samples, chromosomeSizes = chromosomeSizes, 
                                            dir = "./resources/Project_TUV_12995_B01_SOM_Targeted.2018-03-02/", extension = "cnv.facets.v0.5.2.txt", inSampleFolder = TRUE, 
                                            rescaleInput = TRUE, ampCall = 0.2, delCall = -0.235)
-tumor_samples <- load_samples(classes = c("T"), sampleList = "./resources/sampleList.csv")
+target_samples <- load_samples(classes = c("T", "N"), sampleList = "./resources/sampleList.csv")
 
 # Generate norminput argument
 norminput <- retrieveNormInput(normalSegments)
@@ -53,8 +53,8 @@ norminput <- retrieveNormInput(normalSegments)
 # Create folder with output
 dir.create(file.path("./output/", output_dir))
 
-for(tumor_samples.i in 1:length(tumor_samples)) {
-  sample <- tumor_samples[tumor_samples.i]
+for(target_samples.i in 1:length(target_samples)) {
+  sample <- target_samples[target_samples.i]
   
   print(paste("Analyzing sample", sample))
   
