@@ -2,7 +2,7 @@
 # run job in the current working directory where qsub is executed from
 #$ -cwd
 #  specify that the job requires 16GB of memory
-#$ -l m_mem_free=4G
+#$ -l m_mem_free=16G
  
 # run commands and application
 source /sonas-hs/it/hpc/home/easybuild/lmod-setup.sh

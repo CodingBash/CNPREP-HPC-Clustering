@@ -1,0 +1,4 @@
+qsub -N produceSegtable15 -v output_dir='prev_run_7_15_2018_14' -v
+mclust_model='E' -v minjoin='0.25' -v ntrial='40' -v description='Running with
+E model with default minjoin and high ntrial to see if we can capture small
+clusters' runSegmentClustering.sh
