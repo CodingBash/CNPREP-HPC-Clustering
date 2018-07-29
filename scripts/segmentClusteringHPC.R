@@ -36,7 +36,7 @@ source("segmentClusteringLibrary2.R")
 # TODO: Do not include segments with lower than 5K bp (see paper)
 
 reference <- "hN31"
-sample_dir <- "./resources/FACETS_Reference_hN31_7_28_18_1/"
+sample_dir <- "./resources/FACETS_Reference_hN31_7_28_18_2/"
 
 #
 # Load input
