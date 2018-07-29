@@ -35,20 +35,23 @@ source("segmentClusteringLibrary2.R")
 
 # TODO: Do not include segments with lower than 5K bp (see paper)
 
+reference <- "hN31"
+sample_dir <- "./resources/FACETS_Reference_hN31_7_28_18_1/"
+
 #
 # Load input
 #
 cd_cnprep()
 normal_samples <- load_samples(classes = c("N"), sampleList = "./resources/sampleList.csv")
-normal_samples <- normal_samples[-2] # Remove reference organoid
+normal_samples <- normal_samples[normal_samples != reference] # Remove reference organoid
 
 cytobands <- retrieveCytobands(dir = "./resources/cytoBand.txt")
 chromosomeSizes <- readRDS("./resources/chromosomeSizes.rds")
 normalSegments <- selectSegmentsWithEvents(events = c("A", "D", "N"), samples = normal_samples, chromosomeSizes = chromosomeSizes, 
-                                           dir = "./resources/FACETS_Reference_hN31/", sample_subdir="/", reference="hN31", extension = "cnv.facets.v0.5.2.txt", inSampleFolder = TRUE, 
+                                           dir = sample_dir, sample_subdir="/", reference=reference, extension = "cnv.facets.v0.5.2.txt", inSampleFolder = TRUE, 
                                            rescaleInput = TRUE, ampCall = 0.2, delCall = -0.235)
-target_samples <- load_samples(classes = c("N", "T"), sampleList = "./resources/sampleList.csv")
-target_samples <- target_samples[-2] # Remove reference organoid
+target_samples <- load_samples(classes = c("N", "T", "F", "M"), sampleList = "./resources/sampleList.csv")
+target_samples <- target_samples[target_samples != reference] # Remove reference organoid
 
 # Generate norminput argument
 norminput <- retrieveNormInput(normalSegments)
@@ -62,8 +65,8 @@ for(target_samples.i in 1:length(target_samples)) {
   
   print(paste("Analyzing sample", sample))
   
-  facets_segment_data <- retrieveFacetsSegments(sample, sample_subdir = "/", reference = "hN31", dir = "./resources/FACETS_Reference_hN31/")
-  facets_snp_data <- retrieveFacetsSnps(sample, sample_subdir = "/", reference = "hN31", dir = "./resources/FACETS_Reference_hN31/")
+  facets_segment_data <- retrieveFacetsSegments(sample, sample_subdir = "/", reference = reference, dir = sample_dir)
+  facets_snp_data <- retrieveFacetsSnps(sample, sample_subdir = "/", reference = reference, dir = sample_dir)
   
   # Generate seginput argument
   seginput <- retrieveSegInput(facets_segment_data, sample, chromosomeSizes, cytobands)
