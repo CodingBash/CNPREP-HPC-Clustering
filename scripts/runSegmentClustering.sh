@@ -12,5 +12,5 @@ module load RBio/3.6.0
 pwd
 date
 echo ${description}
-Rscript segmentClusteringHPC.R ${output_dir} ${mclust_model} ${minjoin} ${ntrial} "${description}"
+Rscript segmentClusteringHPC.R ${output_dir} ${mclust_model} ${minjoin} ${ntrial} "${description}" ${sample_dir} ${reference}
 date

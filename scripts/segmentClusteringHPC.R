@@ -8,6 +8,8 @@ mclust_model <- NULL
 minjoin <- NULL
 ntrial <- NULL
 description <- "No description provided by user."
+sample_dir <- NA
+reference <- NA
 if (length(args) >= 1){
 	output_dir <- args[1]
 }
@@ -23,6 +25,12 @@ if(length(args) >= 4){
 if (length(args) >= 5){
 	description <- args[5]
 }
+if(length(args) >= 6){
+	sample_dir <- args[6]
+}
+if(length(args) >= 7){
+	reference <- args[7]
+}
 
 print(paste("PARAMETERS:", "output_dir=", output_dir, "mclust_model=", mclust_model, "minjoin=", minjoin, "ntrial=", ntrial, "description=", description))
 #
@@ -35,8 +43,6 @@ source("segmentClusteringLibrary2.R")
 
 # TODO: Do not include segments with lower than 5K bp (see paper)
 
-reference <- "hN31"
-sample_dir <- "./resources/FACETS_Reference_hN31_7_28_18_2/"
 
 #
 # Load input
@@ -50,7 +56,7 @@ chromosomeSizes <- readRDS("./resources/chromosomeSizes.rds")
 normalSegments <- selectSegmentsWithEvents(events = c("A", "D", "N"), samples = normal_samples, chromosomeSizes = chromosomeSizes, 
                                            dir = sample_dir, sample_subdir="/", reference=reference, extension = "cnv.facets.v0.5.2.txt", inSampleFolder = TRUE, 
                                            rescaleInput = TRUE, ampCall = 0.2, delCall = -0.235)
-target_samples <- load_samples(classes = c("N", "T", "F", "M"), sampleList = "./resources/sampleList.csv")
+target_samples <- load_samples(classes = c("T", "F", "M"), sampleList = "./resources/sampleList.csv")
 target_samples <- target_samples[target_samples != reference] # Remove reference organoid
 
 # Generate norminput argument
